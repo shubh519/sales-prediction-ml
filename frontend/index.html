@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sales forecasting using historical sales data and machine learning.">
+  <title>Sales Predictor | Machine Learning</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">↗</span><div><strong>Sales Predictor</strong><small>Machine learning forecasting</small></div></div>
+    <span class="status"><i></i> Forecast workspace</span>
+  </header>
+  <main class="layout">
+    <section class="hero">
+      <div class="eyebrow">SALES ANALYTICS · FORECASTING</div>
+      <h1>Turn historical sales into <span>future insights.</span></h1>
+      <p>Upload your sales CSV, confirm the date and sales columns, and generate a forecast with transparent evaluation metrics.</p>
+    </section>
+    <section class="panel">
+      <div class="section-title"><div><span class="step">01</span><h2>Upload sales data</h2></div><span class="muted">CSV · max 10 MB</span></div>
+      <label class="upload" for="csvFile">
+        <span class="upload-icon">↑</span>
+        <strong id="fileLabel">Choose a CSV file</strong>
+        <small>Include a date column and a numeric sales/value column.</small>
+        <input id="csvFile" type="file" accept=".csv,text/csv">
+      </label>
+      <button id="inspectBtn" class="button primary" disabled>Inspect dataset <span>→</span></button>
+      <p id="inspectStatus" class="message" role="status"></p>
+      <div id="columnOptions" class="options hidden">
+        <div class="field"><label for="dateColumn">Date column</label><select id="dateColumn"></select></div>
+        <div class="field"><label for="salesColumn">Sales / value column</label><select id="salesColumn"></select></div>
+        <div class="field"><label for="periods">Months to forecast</label><select id="periods"><option value="3">3 months</option><option value="6" selected>6 months</option><option value="12">12 months</option><option value="24">24 months</option></select></div>
+        <button id="forecastBtn" class="button primary">Train and forecast <span>→</span></button>
+      </div>
+    </section>
+    <section id="results" class="hidden">
+      <div class="section-title"><div><span class="step">02</span><h2>Forecast results</h2></div><span id="modelLabel" class="pill">Model results</span></div>
+      <div class="metrics">
+        <article class="metric"><span>MAE</span><strong id="mae">—</strong><small>Mean absolute error</small></article>
+        <article class="metric"><span>RMSE</span><strong id="rmse">—</strong><small>Root mean squared error</small></article>
+        <article class="metric"><span>R²</span><strong id="r2">—</strong><small>Test-set fit indicator</small></article>
+        <article class="metric"><span>Monthly records</span><strong id="observations">—</strong><small>After aggregation</small></article>
+      </div>
+      <div class="chart-panel"><div class="chart-heading"><div><h3>Historical sales and forecast</h3><p>Historical values and future predictions are shown separately.</p></div><button id="downloadBtn" class="button secondary">Download forecast CSV</button></div><div class="chart-wrap"><canvas id="salesChart" aria-label="Sales forecast chart"></canvas></div></div>
+      <div class="table-panel"><h3>Forecast by month</h3><div class="table-scroll"><table><thead><tr><th>Month</th><th>Predicted sales</th></tr></thead><tbody id="forecastRows"></tbody></table></div></div>
+      <div class="note-panel"><strong>How to interpret this</strong><p id="limitations"></p><p class="caution">These are model estimates, not guaranteed outcomes. Metrics are calculated on a chronological holdout and should be interpreted in the context of the dataset.</p></div>
+    </section>
+    <footer>Sales Prediction Using Machine Learning · Educational project · FastAPI + Pandas + scikit-learn</footer>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>

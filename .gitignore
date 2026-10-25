@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+.pytest_cache/
+.idea/
+.vscode/
+.DS_Store
+*.joblib
+uploads/
