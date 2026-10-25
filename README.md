@@ -12,7 +12,7 @@ A beginner-friendly sales forecasting web application based on the documented sc
 - Configurable forecasts for 3, 6, 12 or 24 months
 - Historical/forecast chart and forecast CSV download
 - API validation and clear error responses
-- Health endpoint and tests
+- Health endpoint and automated API tests
 - Render deployment configuration
 
 ## Important modelling note
@@ -45,9 +45,20 @@ Open http://127.0.0.1:8000 in your browser. API documentation is at http://127.0
 
 ### Run tests
 
+From the project root:
+
 ```powershell
 pytest -q
 ```
+
+The repository currently defines **4 automated API tests** in `tests/test_api.py`:
+
+1. Health endpoint returns a successful response.
+2. CSV inspection detects the expected date and sales columns.
+3. Forecast endpoint returns a three-period forecast and an MAE metric.
+4. Non-CSV uploads are rejected.
+
+The test file is evidence of these test cases, not proof of a recent passing run. Run `pytest -q` and record the actual pass/fail output before claiming a test result on your resume.
 
 ## CSV format
 
@@ -79,11 +90,19 @@ Use real historical data for meaningful forecasts. The example above is only a f
 5. Open the Render-provided HTTPS URL. Test `/health`, the homepage, and a real CSV upload.
 6. Do not publish a live URL in a resume until you have personally tested the deployed application.
 
-## Suggested resume wording (only after you run and verify it)
+## Suggested resume wording (keep the original project timeline)
 
 **Sales Prediction Using Machine Learning | Python, FastAPI, Pandas, scikit-learn, HTML, CSS, JavaScript**
 - Built a web application that accepts historical sales CSV files, aggregates data monthly, and forecasts future sales using Linear Regression with trend and seasonal features.
 - Implemented chronological holdout evaluation using MAE, RMSE and R-squared, with interactive visualizations and CSV export.
-- Added input validation, API error handling, automated tests, and a Render deployment configuration.
+- Added input validation and API error handling, and wrote four API tests covering health checks, CSV inspection, forecasting, and invalid file uploads.
 
-Only include deployment, test results, metrics, or performance figures that you have actually verified.
+Only claim that tests passed, a deployment is live, or specific metrics were achieved after personally running and verifying them. Keep the existing dates on your resume unchanged.
+
+## Security and limitations
+
+This is a portfolio/demo application. Use only non-sensitive sample data. Model metrics depend on the dataset, and this simple model does not account for external drivers such as promotions, pricing, holidays, or stockouts.
+
+## Author
+
+**Shubham Kumar**
