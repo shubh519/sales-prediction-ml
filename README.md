@@ -49,6 +49,10 @@ uvicorn app.main:app --reload
 
 Open http://127.0.0.1:8000. API documentation is at http://127.0.0.1:8000/docs and the health check is at http://127.0.0.1:8000/health.
 
+## Example evaluation report
+
+See [the synthetic-fixture evaluation report](docs/model-evaluation-example.md) for a reproducible example of MAE, RMSE, R², MAPE, and MAPE-based accuracy. Its 96.12% estimate is from generated test data only, not a real sales dataset.
+
 ## Automated tests
 
 The API test suite has been expanded to **24 test cases** covering the homepage, health check, CSV inspection, successful forecasting, forecast output and metrics (including MAPE-based accuracy), supported forecast horizons, invalid uploads, missing columns, invalid horizons, and insufficient/invalid data.
