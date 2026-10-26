@@ -150,3 +150,12 @@ def test_reject_invalid_date_and_sales_values():
     content = b"date,sales\nnot-a-date,nope\ninvalid,also-nope\nbad,unknown\n"
     response = client.post("/api/forecast", files=upload_csv(content))
     assert response.status_code == 422
+
+
+
+def test_forecast_reports_mape_and_accuracy():
+    response = client.post("/api/forecast", files=upload_csv(), data=forecast_data())
+    assert response.status_code == 200
+    metrics = response.json()["metrics"]
+    assert metrics["mape_percent"] is not None
+    assert 0 <= metrics["mape_based_accuracy_percent"] <= 100
