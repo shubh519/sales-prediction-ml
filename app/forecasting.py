@@ -92,6 +92,18 @@ def create_forecast(df: pd.DataFrame, date_column: str, sales_column: str, perio
     mae = float(mean_absolute_error(y[split:], test_pred))
     rmse = float(np.sqrt(mean_squared_error(y[split:], test_pred)))
     r2 = float(r2_score(y[split:], test_pred)) if len(y[split:]) >= 2 else None
+    # MAPE-based accuracy is a presentation convention, not a universal
+    # definition of forecast accuracy. Exclude zero actuals to avoid division
+    # by zero; if all test actuals are zero, report these metrics as unavailable.
+    nonzero_actuals = y[split:] != 0
+    if np.any(nonzero_actuals):
+        mape = float(np.mean(
+            np.abs((y[split:][nonzero_actuals] - test_pred[nonzero_actuals]) / y[split:][nonzero_actuals])
+        ) * 100)
+        mape_based_accuracy = max(0.0, 100.0 - mape)
+    else:
+        mape = None
+        mape_based_accuracy = None
 
     # Refit on all observed months for production forecasts.
     final_model = LinearRegression().fit(x_all, y)
@@ -114,7 +126,13 @@ def create_forecast(df: pd.DataFrame, date_column: str, sales_column: str, perio
         "observations": int(n),
         "training_observations": int(split),
         "test_observations": int(test_size),
-        "metrics": {"mae": round(mae, 4), "rmse": round(rmse, 4), "r2": round(r2, 4) if r2 is not None and np.isfinite(r2) else None},
+        "metrics": {
+            "mae": round(mae, 4),
+            "rmse": round(rmse, 4),
+            "r2": round(r2, 4) if r2 is not None and np.isfinite(r2) else None,
+            "mape_percent": round(mape, 4) if mape is not None and np.isfinite(mape) else None,
+            "mape_based_accuracy_percent": round(mape_based_accuracy, 4) if mape_based_accuracy is not None and np.isfinite(mape_based_accuracy) else None,
+        },
         "history": history,
         "forecast": forecast_rows,
         "limitations": [
