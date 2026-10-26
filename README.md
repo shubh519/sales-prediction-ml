@@ -19,7 +19,7 @@ A sales forecasting web application that accepts historical sales CSV data and p
 
 This implementation is a rebuild of the documented project scope, not recovered original source code. It uses Linear Regression with a time index and month-of-year sine/cosine features. Values are summed by calendar month. The test set is the latest 20% of observed monthly periods, with at least one test month and at least two training months. R-squared is omitted when the test set has fewer than two observations. Forecasts are clamped to zero.
 
-This is a simple baseline model and does not use promotions, holidays, prices, or other external predictors. Model metrics depend on the uploaded dataset; no fixed accuracy percentage is guaranteed. For this regression problem, MAE, RMSE, and R-squared are more appropriate than classification accuracy.
+This is a simple baseline model and does not use promotions, holidays, prices, or other external predictors. Model metrics depend on the uploaded dataset; no fixed accuracy percentage is guaranteed. For this regression problem, MAE, RMSE, and R-squared are core evaluation metrics. The API also reports MAPE and a clearly labelled MAPE-based accuracy estimate calculated as max(0, 100 − MAPE). This percentage is a presentation convention, not a universal definition of accuracy; it can be misleading when the dataset is small or sales values are near zero. Review the held-out MAE/RMSE and R² alongside it.
 
 ## Run locally on Windows (VS Code)
 
@@ -51,7 +51,7 @@ Open http://127.0.0.1:8000. API documentation is at http://127.0.0.1:8000/docs a
 
 ## Automated tests
 
-The API test suite has been expanded to **23 test cases** covering the homepage, health check, CSV inspection, successful forecasting, forecast output and metrics, supported forecast horizons, invalid uploads, missing columns, invalid horizons, and insufficient/invalid data.
+The API test suite has been expanded to **24 test cases** covering the homepage, health check, CSV inspection, successful forecasting, forecast output and metrics (including MAPE-based accuracy), supported forecast horizons, invalid uploads, missing columns, invalid horizons, and insufficient/invalid data.
 
 GitHub Actions is configured to run `pytest -q` on pushes and pull requests to `main`. The added tests and workflow are committed, but a passing result should only be reported after the GitHub Actions run or a local `pytest -q` run finishes successfully.
 
