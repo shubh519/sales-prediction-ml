@@ -84,6 +84,8 @@ function renderResults(result) {
   document.getElementById("mae").textContent = fmt(result.metrics.mae);
   document.getElementById("rmse").textContent = fmt(result.metrics.rmse);
   document.getElementById("r2").textContent = fmt(result.metrics.r2);
+  document.getElementById("mape").textContent = result.metrics.mape_percent == null ? "N/A" : `${fmt(result.metrics.mape_percent)}%`;
+  document.getElementById("accuracy").textContent = result.metrics.mape_based_accuracy_percent == null ? "N/A" : `${fmt(result.metrics.mape_based_accuracy_percent)}%`;
   document.getElementById("observations").textContent = result.observations;
   document.getElementById("modelLabel").textContent = result.model;
   document.getElementById("limitations").textContent = result.limitations.join(" ");
